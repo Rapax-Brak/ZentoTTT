@@ -1,6 +1,6 @@
-ITEM.Name = 'Bomb Head'
-ITEM.Price = 10000
-ITEM.Model = 'models/Combine_Helicopter/helicopter_bomb01.mdl'
+ITEM.Name = 'Star Glasses'
+ITEM.Price = 200
+ITEM.Model = 'models/gmod_tower/starglasses.mdl'
 ITEM.Attachment = 'eyes'
 
 function ITEM:OnEquip(ply, modifications)
@@ -12,9 +12,9 @@ function ITEM:OnHolster(ply)
 end
 
 function ITEM:ModifyClientsideModel(ply, model, pos, ang)
-	model:SetModelScale(0.5, 0)
-	pos = pos + (ang:Forward() * -2)
-	ang:RotateAroundAxis(ang:Right(), 90)
+	--model:SetModelScale(1.6, 0)
+	pos = pos + (ang:Forward() * -1.6)
+	--ang:RotateAroundAxis(ang:Right(), 90)
 	
 	return model, pos, ang
 end

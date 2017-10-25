@@ -1,5 +1,5 @@
 ITEM.Name = 'Afro'
-ITEM.Price = 200
+ITEM.Price = 20000
 ITEM.Model = 'models/dav0r/hoverball.mdl'
 ITEM.Attachment = 'eyes'
 

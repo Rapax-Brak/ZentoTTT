@@ -1,6 +1,6 @@
-ITEM.Name = 'Turtle Hat | VIP'
-ITEM.Price = 10000
-ITEM.Model = 'models/props/de_tides/Vending_turtle.mdl'
+ITEM.Name = 'Sombrero'
+ITEM.Price = 20000
+ITEM.Model = 'models/gmod_tower/sombrero.mdl'
 ITEM.Attachment = 'eyes'
 ITEM.AllowedUserGroups = {"founder","manager","communitymanager","headofstaff", "vipadmin", "vipmod", "supervip", "vip"}
 
@@ -13,8 +13,9 @@ function ITEM:OnHolster(ply)
 end
 
 function ITEM:ModifyClientsideModel(ply, model, pos, ang)
-	pos = pos + (ang:Forward() * -3)
-	ang:RotateAroundAxis(ang:Up(), -90)
+	ang:RotateAroundAxis(ang:Right(), 15)
+	pos = pos + (ang:Forward() * -3) + (ang:Up() * 3)
+	--
 	
 	return model, pos, ang
 end

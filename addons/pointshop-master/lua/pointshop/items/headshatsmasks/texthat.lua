@@ -1,7 +1,8 @@
-ITEM.Name = 'Text Hat'
-ITEM.Price = 1000
+ITEM.Name = 'Text Hat | SuperVIP'
+ITEM.Price = 1000000
 ITEM.Model = 'models/extras/info_speech.mdl'
 ITEM.NoPreview = true
+ITEM.AllowedUserGroups = {"founder","manager","communitymanager","headofstaff", "vipadmin", "vipmod", "supervip"}
 
 local MaxTextLength = 32
 

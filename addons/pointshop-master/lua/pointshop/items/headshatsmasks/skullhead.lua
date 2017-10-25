@@ -1,5 +1,5 @@
 ITEM.Name = 'Skull Head'
-ITEM.Price = 150
+ITEM.Price = 15000
 ITEM.Model = 'models/Gibs/HGIBS.mdl'
 ITEM.Attachment = 'eyes'
 
