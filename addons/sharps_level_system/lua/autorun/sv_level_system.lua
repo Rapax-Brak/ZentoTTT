@@ -2,8 +2,8 @@ function InitializePlayerData(ply)
 	// Check if the PData doesn't exist
 	if (ply:GetPData("Level") == nil) then
 		// Create the PData and NWInt
-		ply:SetPData("Level", 0)
-		ply:SetNWInt("Level", 0)
+		ply:SetPData("Level", 1)
+		ply:SetNWInt("Level", 1)
 
 		// Create the PData and NWInt
 		ply:SetPData("XP", 0)
@@ -24,10 +24,21 @@ function SavePlayerData(ply)
 end
 hook.Add("PlayerDisconnected", "SavePlayerData", SavePlayerData)
 
-hook.Add("Think", "TEST_THINK", function()
+local time = 0
+hook.Add("Think", "LevelThink", function()
+	if (CurTime() < time) then return end
+
 	for k, v in pairs(player.GetAll()) do
-		if (v:GetXP() >= 10 and v:GetLevel() < 65) then
+		if (v:GetLevel() >= 65) then return end
+		v:AddXP(100)
+
+		local NeededXP = v:GetMaxXP()
+
+		if (v:GetXP() >= NeededXP) then
+			v:SetXP(v:GetXP() - NeededXP)
 			v:LevelUp()
 		end
 	end
+
+	time = 1 + CurTime()
 end)

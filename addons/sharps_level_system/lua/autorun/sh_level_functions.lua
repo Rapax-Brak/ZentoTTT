@@ -28,3 +28,7 @@ end
 function player:GetXP()
 	return tonumber(self:GetNWInt("XP"))
 end
+
+function player:GetMaxXP()
+	return tonumber((self:GetLevel() * 100) * .25)
+end
