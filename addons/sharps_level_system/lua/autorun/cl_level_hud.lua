@@ -34,6 +34,19 @@ local function formatNumber(n)
     return n
 end
 
+// Fonts
+surface.CreateFont("LevelFont", {
+	font = "DermaLarge",
+	size = ScreenScale(12),
+	weight = 500
+})
+
+surface.CreateFont("XPFont", {
+	font = "DermaLarge",
+	size = ScreenScale(8),
+	weight = 500
+})
+
 local smooth = 0
 local function Levels_HUD()
 	local client = LocalPlayer()
@@ -45,17 +58,23 @@ local function Levels_HUD()
 	draw.RoundedBox(0, Padding, Padding, Width, Height, Color(0, 0, 0, 150))
 
 	// Get the size of the texts displayed
-	surface.SetFont("DermaLarge")
+	surface.SetFont("LevelFont")
 	local LevelText = "Level: " .. formatNumber(client:GetLevel())
 	local LT_Width, LT_Height = surface.GetTextSize(LevelText)
 
+	surface.SetFont("XPFont")
 	local XPText = "XP: " .. formatNumber(client:GetXP()) .. "/" .. formatNumber(client:GetMaxXP())
 
-	draw.SimpleText(LevelText, "DermaLarge", Padding + (Width / 2), Padding + 5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
-	draw.SimpleText(XPText, "DermaDefault", Padding + (Width / 2), Padding + 5 + LT_Height, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+	if (client:GetLevel() >= 65) then
+		XPText = "MAX LEVEL"
+	end
+
+	draw.SimpleText(LevelText, "LevelFont", Padding + (Width / 2), Padding + 5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
+	draw.SimpleText(XPText, "XPFont", Padding + (Width / 2), Padding + 5 + LT_Height, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
 	smooth = Lerp(0.99 * FrameTime(), smooth, (Width - 10) * (client:GetXP() / client:GetMaxXP()))
 
+	draw.RoundedBox(0, Padding + 5, Padding + (Height - 10), Width - 10, 5, Color(0, 0, 0, 150))
 	draw.RoundedBox(0, Padding + 5, Padding + (Height - 10), smooth, 5, color_white)
 end
 hook.Add("HUDPaint", "Sharp_HUDPaint", Levels_HUD)

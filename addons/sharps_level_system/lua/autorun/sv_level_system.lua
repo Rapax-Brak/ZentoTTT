@@ -4,6 +4,7 @@ function InitializePlayerData(ply)
 		// Create the PData and NWInt
 		ply:SetPData("Level", 1)
 		ply:SetNWInt("Level", 1)
+
 		// Create the PData and NWInt
 		ply:SetPData("XP", 0)
 		ply:SetNWInt("XP", 0)
@@ -15,50 +16,71 @@ function InitializePlayerData(ply)
 	end
 end
 hook.Add("PlayerInitialSpawn", "InitializePlayerData", InitializePlayerData)
-function SavePlayerData(ply)
+
+function LevelPlayerDeath(victim, inflictor, attacker)
+end
+hook.Add("PlayerDeath", "LevelPlayerDeath", LevelPlayerDeath)
+
+function SaveDisconnectedPlayerData(ply)
 	// Update the player's level and xp PData
 	ply:SetPData("Level", ply:GetNWInt("Level"))
 	ply:SetPData("XP", ply:GetNWInt("XP"))
 end
-hook.Add("PlayerDisconnected", "SavePlayerData", SavePlayerData)
+hook.Add("PlayerDisconnected", "SaveDisconnectedPlayerData", SaveDisconnectedPlayerData)
+
+function SaveAllPlayerData(ply)
+	// Loop through every player
+	for k, v in pairs(player.GetAll()) do
+		// Update their level and xp PData
+		v:SetPData("Level", v:GetNWInt("Level"))
+		v:SetPData("XP", v:GetNWInt("XP"))
+	end
+end
+hook.Add("ShutDown", "SaveAllPlayerData", SaveAllPlayerData)
 
 local function TTTWinRoundPoints(result)
 --	if result == WIN_TIMELIMIT then return end 
-	if result == WIN_INNOCENT then 
-		for _,ply in pairs(player.GetAll() ) do
-			if (ply:GetRole() == ROLE_INNOCENT or ply:GetRole()== ROLE_DETECTIVE) then
-				if ply:Alive() then
+	if (result == WIN_INNOCENT) then 
+		for _, ply in pairs(player.GetAll()) do
+			if (ply:GetRole() == ROLE_INNOCENT or ply:GetRole() == ROLE_DETECTIVE) then
+				if (ply:Alive() and ply:GetLevel() < 65) then
 					ply:AddXP( 10 )
 					ply:ChatPrint("+10XP for winning and surviving as innocent")
-				elseif not ply:Alive() then 
+					ply:Notify("+10XP for winning and surviving as innocent", 1, 5, "")
+				elseif (!ply:Alive() and ply:GetLevel() < 65) then 
 					ply:AddXP( 5 )
 					ply:ChatPrint("+5XP for winning but dying as innocent")
+					ply:Notify("+5XP for winning and surviving as innocent", 1, 5, "")
 				end
-			elseif ply:GetRole() == TEAM_SPEC then return
+			elseif (ply:GetRole() == TEAM_SPEC) then return
 			end
 		end
-	elseif result == WIN_TRAITOR then
-		for _,ply in pairs(player.GetAll() ) do
-			if ply:GetRole() == ROLE_TRAITOR then
-				if ply:Alive() then
+	elseif (result == WIN_TRAITOR) then
+		for _, ply in pairs(player.GetAll()) do
+			if (ply:GetRole() == ROLE_TRAITOR) then
+				if (ply:Alive() and ply:GetLevel() < 65) then
 					ply:AddXP( 25 )
 					ply:ChatPrint("+25XP for winning and surviving as traitor")
-				elseif not ply:Alive() then
+					ply:Notify("+25XP for winning and surviving as traitor", 1, 5, "")
+				elseif (!ply:Alive() and ply:GetLevel() < 65) then
 					ply:AddXP( 10 )
 					ply:ChatPrint("+10XP for winning and dying as traitor")
+					ply:Notify("+10XP for winning and surviving as traitor", 1, 5, "")
 				end
-			elseif ply:GetRole() == TEAM_SPEC then return
+			elseif (ply:GetRole() == TEAM_SPEC) then return
 			end
 		end
-	elseif result == WIN_TIMELIMIT then 
-		for _,ply in pairs(player.GetAll() ) do
-			if (ply:GetRole() == ROLE_INNOCENT or ply:GetRole()== ROLE_DETECTIVE) then
-				if ply:Alive() then
+	elseif (result == WIN_TIMELIMIT) then 
+		for _, ply in pairs(player.GetAll()) do
+			if (ply:GetRole() == ROLE_INNOCENT or ply:GetRole() == ROLE_DETECTIVE) then
+				if (ply:Alive() and ply:GetLevel() < 65) then
 					ply:AddXP( 5 )
 					ply:ChatPrint("+5XP because the traitors are being puss bois")
-				elseif not ply:Alive() then 
+					ply:Notify("+5XP because the traitors are being puss bois", 1, 5, "")
+				elseif (!ply:Alive() and ply:GetLevel() < 65) then 
 					ply:AddXP( 5 )
 					ply:ChatPrint("+5XP because the traitors are being puss bois")
+					ply:Notify("+5XP because the traitors are being puss bois", 1, 5, "")
 				end
 			end
 		end
@@ -66,4 +88,10 @@ local function TTTWinRoundPoints(result)
 end -- end func
 hook.Add("TTTEndRound", "WinPoints", TTTWinRoundPoints)
 
-
+hook.Add("Think", "LevelThink", function()
+	for k, v in pairs(player.GetAll()) do
+		if (v:GetXP() >= v:GetMaxXP()) then
+			v:LevelUp()
+		end
+	end
+end)
