@@ -19,7 +19,7 @@ local function RoundedBoxBlur(x, y, w, h, amount, heavyness)
 end
 
 // Format numbers (i.e: 4000 = 4,000)
-local function formatNumber(n)
+function string.formatNumber(n)
 	n = tonumber(n)
 	if (!n) then
 		return 0
@@ -36,13 +36,13 @@ end
 
 // Fonts
 surface.CreateFont("LevelFont", {
-	font = "DermaLarge",
+	font = "Open Sans",
 	size = ScreenScale(12),
 	weight = 500
 })
 
 surface.CreateFont("XPFont", {
-	font = "DermaLarge",
+	font = "Open Sans",
 	size = ScreenScale(8),
 	weight = 500
 })
@@ -59,20 +59,28 @@ local function Levels_HUD()
 
 	// Get the size of the texts displayed
 	surface.SetFont("LevelFont")
-	local LevelText = "Level: " .. formatNumber(client:GetLevel())
+	local LevelText = "Level: " .. string.formatNumber(client:GetLevel())
 	local LT_Width, LT_Height = surface.GetTextSize(LevelText)
 
 	surface.SetFont("XPFont")
-	local XPText = "XP: " .. formatNumber(client:GetXP()) .. "/" .. formatNumber(client:GetMaxXP())
+	local XPText = "XP: " .. string.formatNumber(client:GetXP()) .. "/" .. string.formatNumber(client:GetMaxXP())
 
-	if (client:GetLevel() >= 65) then
+	if (client:GetLevel() >= LevelConfig.MaxLevel) then
 		XPText = "MAX LEVEL"
 	end
 
 	draw.SimpleText(LevelText, "LevelFont", Padding + (Width / 2), Padding + 5, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 	draw.SimpleText(XPText, "XPFont", Padding + (Width / 2), Padding + 5 + LT_Height, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_TOP)
 
-	smooth = Lerp(0.99 * FrameTime(), smooth, (Width - 10) * (client:GetXP() / client:GetMaxXP()))
+	local ClientXP = client:GetXP()
+	local ClientMaxXP = client:GetMaxXP()
+	local BarWidth = (Width - 10)
+	
+	if (ClientXP >= ClientMaxXP) then
+		ClientXP = ClientMaxXP
+	end
+
+	smooth = Lerp(0.99 * FrameTime(), smooth, BarWidth * (ClientXP / ClientMaxXP))
 
 	draw.RoundedBox(0, Padding + 5, Padding + (Height - 10), Width - 10, 5, Color(0, 0, 0, 150))
 	draw.RoundedBox(0, Padding + 5, Padding + (Height - 10), smooth, 5, color_white)

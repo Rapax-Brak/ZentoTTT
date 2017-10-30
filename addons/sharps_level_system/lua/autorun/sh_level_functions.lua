@@ -28,14 +28,32 @@ function ply:Notify(text, type, duration)
     net.Send(rcp)
 end
 
+if (CLIENT) then
+	net.Receive("NotifyPlayer", function()
+		local msg, type, dur = net.ReadString(), net.ReadInt(16), net.ReadInt(32)
+
+		notification.AddLegacy(msg, type, dur)
+	end)
+end
+
 function ply:SetLevel(level)
 	self:SetNWInt("Level", level)
 end
 
 function ply:LevelUp()
-	self:SetXP(self:GetXP() - self:GetMaxXP())
+	if (self:GetLevel() >= 65) then return end
+
+	if (self:GetXP() > 0) then
+		if (self:GetMaxXP() > self:GetXP()) then
+			self:SetXP(0)
+		else
+			self:SetXP(self:GetXP() - self:GetMaxXP())
+		end
+	elseif (self:GetXP() <= 0) then
+		self:SetXP(0)
+	end
 	self:SetNWInt("Level", self:GetNWInt("Level") + 1)
-	self:Notify("You leveled up to level up!", 1, 5)
+	self:Notify("You leveled up to " .. self:GetLevel() .. "!", 0, 5)
 end
 
 function ply:SetXP(amount)
@@ -50,14 +68,6 @@ function ply:AddXP(amount)
 	self:SetNWInt("XP", self:GetNWInt("XP") + amount)
 end
 
-if (CLIENT) then
-	net.Receive("NotifyPlayer", function()
-		local msg, type, dur = net.ReadString(), net.ReadInt(16), net.ReadInt(32)
-
-		notification.AddLegacy(msg, type, dur)
-	end)
-end
-
 function ply:GetLevel()
 	return tonumber(self:GetNWInt("Level"))
 end
@@ -67,5 +77,5 @@ function ply:GetXP()
 end
 
 function ply:GetMaxXP()
-	return tonumber((self:GetLevel() * 100) * .25)
+	return tonumber((self:GetLevel() * 100) * LevelConfig.MaxXPMultiplier)
 end
