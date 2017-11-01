@@ -41,7 +41,7 @@ function ply:SetLevel(level)
 end
 
 function ply:LevelUp()
-	if (self:GetLevel() >= 65) then return end
+	if (self:GetLevel() >= LevelConfig.MaxLevel) then return end
 
 	if (self:GetXP() > 0) then
 		if (self:GetMaxXP() > self:GetXP()) then
@@ -57,13 +57,13 @@ function ply:LevelUp()
 end
 
 function ply:SetXP(amount)
-	if (self:GetLevel() >= 65) then return end
+	if (self:GetLevel() >= LevelConfig.MaxLevel) then return end
 
 	self:SetNWInt("XP", amount)
 end
 
 function ply:AddXP(amount)
-	if (self:GetLevel() >= 65) then return end
+	if (self:GetLevel() >= LevelConfig.MaxLevel) then return end
 
 	self:SetNWInt("XP", self:GetNWInt("XP") + amount)
 end

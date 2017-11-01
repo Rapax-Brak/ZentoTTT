@@ -38,56 +38,6 @@ function SaveAllPlayerData(ply)
 end
 hook.Add("ShutDown", "SaveAllPlayerData", SaveAllPlayerData)
 
-local function TTTWinRoundPoints(result)
---	if result == WIN_TIMELIMIT then return end 
-	if (result == WIN_INNOCENT) then 
-		for _, ply in pairs(player.GetAll()) do
-			if (ply:GetRole() == ROLE_INNOCENT or ply:GetRole() == ROLE_DETECTIVE) then
-				if (ply:Alive() and ply:GetLevel() < LevelConfig.MaxLevel) then
-					ply:AddXP(10)
-					--ply:ChatPrint("+10XP for winning and surviving as innocent")
-					ply:Notify("+10XP for winning and surviving as innocent", 0, 5, "")
-				elseif (!ply:Alive() and ply:GetLevel() < LevelConfig.MaxLevel) then 
-					ply:AddXP(5)
-					--ply:ChatPrint("+5XP for winning but dying as innocent")
-					ply:Notify("+5XP for winning and surviving as innocent", 0, 5, "")
-				end
-			elseif (ply:GetRole() == TEAM_SPEC) then return
-			end
-		end
-	elseif (result == WIN_TRAITOR) then
-		for _, ply in pairs(player.GetAll()) do
-			if (ply:GetRole() == ROLE_TRAITOR) then
-				if (ply:Alive() and ply:GetLevel() < LevelConfig.MaxLevel) then
-					ply:AddXP(25)
-					--ply:ChatPrint("+25XP for winning and surviving as traitor")
-					ply:Notify("+25XP for winning and surviving as traitor", 0, 5, "")
-				elseif (!ply:Alive() and ply:GetLevel() < LevelConfig.MaxLevel) then
-					ply:AddXP(10)
-					--ply:ChatPrint("+10XP for winning and dying as traitor")
-					ply:Notify("+10XP for winning and surviving as traitor", 0, 5, "")
-				end
-			elseif (ply:GetRole() == TEAM_SPEC) then return
-			end
-		end
-	elseif (result == WIN_TIMELIMIT) then 
-		for _, ply in pairs(player.GetAll()) do
-			if (ply:GetRole() == ROLE_INNOCENT or ply:GetRole() == ROLE_DETECTIVE) then
-				if (ply:Alive() and ply:GetLevel() < LevelConfig.MaxLevel) then
-					ply:AddXP(5)
-					--ply:ChatPrint("+5XP because the traitors are being puss bois")
-					ply:Notify("+5XP because the traitors are being puss bois", 0, 5, "")
-				elseif (!ply:Alive() and ply:GetLevel() < LevelConfig.MaxLevel) then 
-					ply:AddXP(5)
-					--ply:ChatPrint("+5XP because the traitors are being puss bois")
-					ply:Notify("+5XP because the traitors are being puss bois", 0, 5, "")
-				end
-			end
-		end
-	end
-end -- end func
-hook.Add("TTTEndRound", "WinPoints", TTTWinRoundPoints)
-
 hook.Add("Think", "LevelThink", function()
 	for k, v in pairs(player.GetAll()) do
 		if (v:GetXP() >= v:GetMaxXP()) then

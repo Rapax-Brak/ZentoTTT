@@ -37,13 +37,13 @@ end
 // Fonts
 surface.CreateFont("LevelFont", {
 	font = "Open Sans",
-	size = ScreenScale(12),
+	size = ScreenScale(10),
 	weight = 500
 })
 
 surface.CreateFont("XPFont", {
 	font = "Open Sans",
-	size = ScreenScale(8),
+	size = ScreenScale(7),
 	weight = 500
 })
 
@@ -51,7 +51,7 @@ local smooth = 0
 local function Levels_HUD()
 	local client = LocalPlayer()
 
-	local Width, Height = ScrW() * 0.15, ScrH() * 0.075
+	local Width, Height = ScrW() * 0.13, ScrH() * 0.06
 	local Padding = 15
 
 	RoundedBoxBlur(Padding, Padding, Width, Height, 2, 5)
