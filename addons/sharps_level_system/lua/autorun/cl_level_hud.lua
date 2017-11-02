@@ -49,7 +49,7 @@ surface.CreateFont("XPFont", {
 
 local smooth = 0
 local function Levels_HUD()
-	local client = LocalPlayer()
+	/*local client = LocalPlayer()
 
 	local Width, Height = ScrW() * 0.13, ScrH() * 0.06
 	local Padding = 15
@@ -83,6 +83,6 @@ local function Levels_HUD()
 	smooth = Lerp(0.99 * FrameTime(), smooth, BarWidth * (ClientXP / ClientMaxXP))
 
 	draw.RoundedBox(0, Padding + 5, Padding + (Height - 10), Width - 10, 5, Color(0, 0, 0, 150))
-	draw.RoundedBox(0, Padding + 5, Padding + (Height - 10), smooth, 5, color_white)
+	draw.RoundedBox(0, Padding + 5, Padding + (Height - 10), smooth, 5, color_white)*/
 end
 hook.Add("HUDPaint", "Sharp_HUDPaint", Levels_HUD)

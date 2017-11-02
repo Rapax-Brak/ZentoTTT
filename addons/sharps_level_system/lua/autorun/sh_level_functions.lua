@@ -1,3 +1,5 @@
+include("sh_level_config.lua")
+
 local ply = FindMetaTable("Player")
 
 if (SERVER) then
@@ -69,13 +71,14 @@ function ply:AddXP(amount)
 end
 
 function ply:GetLevel()
-	return tonumber(self:GetNWInt("Level"))
+	return self:GetNWInt("Level")
 end
 
 function ply:GetXP()
-	return tonumber(self:GetNWInt("XP"))
+	return self:GetNWInt("XP")
 end
 
 function ply:GetMaxXP()
-	return tonumber((self:GetLevel() * 100) * LevelConfig.MaxXPMultiplier)
+	return (self:GetLevel() * 100) * LevelConfig.MaxXPMultiplier
+	--return 50
 end

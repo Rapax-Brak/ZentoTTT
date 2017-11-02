@@ -1,3 +1,5 @@
+include("sh_config.lua")
+
 local function TTTWinRoundPoints(result)
 --	if result == WIN_TIMELIMIT then return end 
 	if (result == WIN_INNOCENT) then 

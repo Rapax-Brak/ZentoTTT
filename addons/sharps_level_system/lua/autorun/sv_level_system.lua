@@ -40,8 +40,8 @@ hook.Add("ShutDown", "SaveAllPlayerData", SaveAllPlayerData)
 
 hook.Add("Think", "LevelThink", function()
 	for k, v in pairs(player.GetAll()) do
-		if (v:GetXP() >= v:GetMaxXP()) then
+		/*if (v:GetXP() >= v:GetMaxXP()) then
 			v:LevelUp()
-		end
+		end*/
 	end
 end)
